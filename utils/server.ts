@@ -1,3 +1,2 @@
-const dev = process.env.NODE_ENV !== 'production';
-
-export const server = dev ? 'http://localhost:8080' : '';
+export const server = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:3000' : '';
