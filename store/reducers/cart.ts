@@ -34,23 +34,24 @@ const cartSlice = createSlice({
       if (index !== -1) {
         state.cartItems[index].count += action.payload.count;
       } else {
-        return {
-          ...state,
-          cartItems: [...state.cartItems, action.payload.product]
-        };
+        state.cartItems.push({ ...action.payload.product, count: action.payload.count });
       }
     },
     removeProduct(state, action: PayloadAction<ProductStoreType>) {
-      // find index of product
-      state.cartItems.splice(indexSameProduct(state, action.payload), 1);
+      const index = indexSameProduct(state, action.payload);
+      if (index !== -1) {
+        state.cartItems.splice(index, 1);
+      }
     },
     setCount(state, action: PayloadAction<AddProductType>) {
-      // find index and add new count on product count
       const indexItem = indexSameProduct(state, action.payload.product);
-      state.cartItems[indexItem].count = action.payload.count;
+      if (indexItem !== -1) {
+        state.cartItems[indexItem].count = action.payload.count;
+      }
     },
   },
-})
+});
+
 
 export const { addProduct, removeProduct, setCount } = cartSlice.actions
 export default cartSlice.reducer

@@ -2,9 +2,12 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/404": "pages/404.js",
+  "/": "pages/index.js",
+  "/api/products": "pages/api/products.js",
   "/products": "pages/products.js",
   "/api/product/[pid]": "pages/api/product/[pid].js",
   "/product/[pid]": "pages/product/[pid].js",
-  "/404": "pages/404.js",
-  "/api/products": "pages/api/products.js"
+  "/cart": "pages/cart.js",
+  "/cart/checkout": "pages/cart/checkout.js"
 }
