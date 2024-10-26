@@ -23,7 +23,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install --force
+          npm install
           npm run build --if-present
           npm run test --if-present
 
@@ -57,9 +57,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_241C91C22E8640188689CCD03621CB47 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5B850309E9D549819081A5E718434126 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9C87D6317C0B4D8689B22B2B3B58FCEF }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_529842CFBF494AB89006D5EADE7198A3 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F39EC85733394575AD62AC2CA8E91561 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_61A9D356EE464A10B2830DD066089C8E }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
