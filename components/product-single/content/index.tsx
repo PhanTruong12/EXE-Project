@@ -79,7 +79,7 @@ const Content = ({ product }: ProductContent) => {
         <h2 className="product__name">{product.productName}</h2>
 
         <div className="product__prices">
-          <h4>{ product.currentPrice }VND</h4>
+          <h4>{ product.unitPrice }VND</h4>
           {product.discount &&
             <span>{ product.unitPrice }VND</span>
           }

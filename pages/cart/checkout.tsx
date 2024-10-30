@@ -21,7 +21,7 @@ const CheckoutPage = () => {
     const cartItems = state.cart.cartItems;
     let totalPrice = 0;
     if(cartItems.length > 0) {
-      cartItems.forEach(item => totalPrice += item.price * item.count);
+      cartItems.forEach(item => totalPrice += item.unitPrice * item.count);
     }
 
     return totalPrice;

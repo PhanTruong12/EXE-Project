@@ -9,7 +9,7 @@ const ShoppingCart = () => {
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map(item => totalPrice += item.price * item.count);
+      cartItems.map(item => totalPrice += item.unitPrice * item.count);
     }
     return totalPrice;
   };
@@ -37,14 +37,14 @@ const ShoppingCart = () => {
 
                 {cartItems.map(item => (
                   <Item
-                    key={item.id}
-                    id={item.id}
+                    key={item.productId}
+                    productId={item.productId}
                     thumb={item.thumb}
-                    name={item.name}
+                    productName={item.productName}
                     hireDate={item.hireDate}      // Use the new fields
                     startTime={item.startTime}
                     endTime={item.endTime}
-                    price={item.price}
+                    unitPrice={item.unitPrice}
                     count={item.count}
                   />
                 ))}
