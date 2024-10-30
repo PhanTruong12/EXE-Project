@@ -1,5 +1,5 @@
-import ReviewsList from './reviews-list';
-import Punctuation from './punctuation';
+//import ReviewsList from './reviews-list';
+// import Punctuation from './punctuation';
 import { ProductType } from 'types';
 
 type ReviewsProductType = {
@@ -19,7 +19,7 @@ const Reviews = ({ show, product }: ReviewsProductType) => {
         countOpinions={product.punctuation.countOpinions}
         votes={product.punctuation.votes} 
       /> */}
-      <ReviewsList reviews={product.reviews} />
+      {/* <ReviewsList reviews={product.reviews} /> */}
     </section>
   );
 };
