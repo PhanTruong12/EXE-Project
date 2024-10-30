@@ -11,7 +11,7 @@ const initialState = {
 
 const indexSameProduct = (state: CartTypes, action: ProductStoreType) => {
   const sameProduct = (product: ProductStoreType) => (
-    product.id === action.id && 
+    product.productId === action.productId && 
     product.hireDate === action.hireDate &&
     product.startTime === action.startTime &&
     product.endTime === action.endTime
