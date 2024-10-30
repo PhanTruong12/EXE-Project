@@ -18,6 +18,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [onTop, setOnTop] = useState(( !arrayPaths.includes(router.pathname) || isErrorPage ) ? false : true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
   const navRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -32,6 +33,12 @@ const Header = ({ isErrorPage }: HeaderType) => {
   useEffect(() => {
     if(!arrayPaths.includes(router.pathname) || isErrorPage) {
       return;
+    }
+
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const user = JSON.parse(storedUserInfo);
+      setUserName(user.FirstName);
     }
 
     headerClass();
@@ -87,7 +94,10 @@ const Header = ({ isErrorPage }: HeaderType) => {
             </button>
           </Link>
           <Link href="/login" legacyBehavior>
-            <button className="site-header__btn-avatar"><i className="icon-avatar"></i></button>
+            <button className="site-header__btn-avatar">
+                <i className="icon-avatar"></i>
+                {userName && <span className="user-name">{userName}</span>} {}
+              </button>
           </Link>
           <button 
             onClick={() => setMenuOpen(true)} 

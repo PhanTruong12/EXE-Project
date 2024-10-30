@@ -1,7 +1,8 @@
 import Layout from '../layouts/Main';
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
-import { server } from '../utils/server'; 
+//import { server } from '../utils/server'; 
+import { useRouter } from 'next/router';
 import { postData } from '../utils/services'; 
 
 type LoginMail = {
@@ -10,20 +11,32 @@ type LoginMail = {
 }
 
 const LoginPage = () => {
+  const router = useRouter();
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data: LoginMail) => {
-    console.log({
-      Email: data.email,
-      Password: data.password
-    });
-    const res = await postData(`/auth/SignIn`, {
-      Email: data.email,
-      Password: data.password
-    });
-
-    console.log(res);
-  };
+    try {
+      const res = await postData('/auth/SignIn', {
+        Email: data.email,
+        Password: data.password,
+      });
+  
+      if (res && res.token) {
+        localStorage.setItem('jwtToken', res.token);
+  
+        if (res.userInfo) {
+          localStorage.setItem('userInfo', JSON.stringify(res.userInfo));
+        }
+  
+        router.push('/');
+      } else {
+        alert('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      alert('Something went wrong. Please try again.');
+    }
+  };  
+  
 
   return (
     <Layout>
