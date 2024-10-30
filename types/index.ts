@@ -17,12 +17,12 @@ export type ReviewType = {
 }
 
 export type ProductType = {
-  id: string;
-  name: string;
+  productId: string;
+  productName: string;
   thumb: string;
-  price: string;
+  unitPrice: number;
   count: number;
-  images: string[];
+  productImages: ProductImageType[];
   discount?: string;
   currentPrice: number;
   punctuation: PunctuationType;
@@ -30,20 +30,27 @@ export type ProductType = {
 }
 
 export type ProductTypeList = {
-  id: string;
-  name: string;
-  images: string[];
+  productId: string;
+  productName: string;
+  productImages: ProductImageType[];
   discount?: string;
-  price: number;
+  unitPrice: number;
   currentPrice?: number;
   
 }
 
+export type ProductImageType = {
+  imageId: string;
+  productId: string;
+  imageName: string;
+  imageData: string;
+}
+
 export type ProductStoreType = {
-  id: string;
-  name: string;
+  productId: string;
+  productName: string;
   thumb: string;
-  price: number;
+  unitPrice: number;
   count: number;
   hireDate: string;
   startTime: string;
