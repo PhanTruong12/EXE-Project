@@ -1,7 +1,7 @@
 import Layout from '../layouts/Main';
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
-import { server } from '../utils/server'; 
+//import { server } from '../utils/server'; 
 import { postData } from '../utils/services'; 
 
 type LoginMail = {
