@@ -31,14 +31,14 @@ const Header = ({ isErrorPage }: HeaderType) => {
   }
 
   useEffect(() => {
-    if(!arrayPaths.includes(router.pathname) || isErrorPage) {
-      return;
-    }
-
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
       const user = JSON.parse(storedUserInfo);
-      setUserName(user.FirstName);
+      setUserName(user.FirstName+" "+user.LastName);
+    }
+
+    if(!arrayPaths.includes(router.pathname) || isErrorPage) {
+      return;
     }
 
     headerClass();
@@ -93,12 +93,20 @@ const Header = ({ isErrorPage }: HeaderType) => {
               }
             </button>
           </Link>
-          <Link href="/login" legacyBehavior>
-            <button className="site-header__btn-avatar">
+          {
+            userName ? (
+              <button className="site-header__btn-avatar" disabled>
                 <i className="icon-avatar"></i>
-                {userName && <span className="user-name">{userName}</span>} {}
+                <span className="user-name">{userName}</span>
               </button>
-          </Link>
+            ) : (
+              <Link href="/login" legacyBehavior>
+                <button className="site-header__btn-avatar">
+                  Login
+                </button>
+              </Link>
+            )
+          }
           <button 
             onClick={() => setMenuOpen(true)} 
             className="site-header__btn-menu">

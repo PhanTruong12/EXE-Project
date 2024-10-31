@@ -403,6 +403,19 @@ h5 {
     }
   }
 
+  .site-header__btn-login {
+    display: none;
+    color: white;
+
+    @include breakpoint(tablet-lg) {
+      display: block;
+    }
+  }
+  .user-name{
+    color: #008B8B;
+    padding: 5px;
+  }
+
   .site-header__btn-menu {
     @include breakpoint(tablet-lg) {
       display: none;

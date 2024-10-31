@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { some } from 'lodash';
+import { some, toInteger } from 'lodash';
 import { addProduct } from 'store/reducers/cart';
 import { toggleFavProduct } from 'store/reducers/user';
 import { ProductType, ProductStoreType } from 'types';
@@ -34,16 +34,37 @@ const Content = ({ product }: ProductContent) => {
     const today = new Date();
     const selectedDate = new Date(hireDate);
 
+    if(selectedDate == undefined){
+      errorMessages.push("Hire date is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
     if (selectedDate < today) {
-      errorMessages.push("Hire date cannot be in the past.");
+      errorMessages.push("Hire date cannot be in the past!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
+    if (startTime == null || startTime == '') {
+      errorMessages.push("Start time is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
+    if (endTime == null || endTime == '') {
+      errorMessages.push("End time is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
     }
 
     // Validate start time is before end time
-    if (startTime >= endTime) {
-      errorMessages.push("Start time must be before end time.");
+    if (toInteger(startTime.split(":")[0])+4 - toInteger(endTime.split(":")[0]) > 0) {
+      errorMessages.push("End time must be at least 4 hours greater than start time!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
     }
 
-    setErrors(errorMessages);
     return errorMessages.length === 0;
   }
 
