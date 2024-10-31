@@ -64,3 +64,14 @@ export type GtagEventType = {
   label: string;
   value: string
 }
+export type FakeSupType = {
+  supId: string;                 // ID giả của SUP
+  supName: string;               // Tên SUP
+  description: string;           // Mô tả SUP
+  unitPrice: number;             // Giá thuê mỗi ngày
+  available: boolean;            // Trạng thái còn trống (true: còn, false: hết)
+  images: string[];              // Các URL hình ảnh của SUP
+  hireDate?: string;             
+};
+
+export type FakeSupListType = FakeSupType[]; // Danh sách SUP giả
