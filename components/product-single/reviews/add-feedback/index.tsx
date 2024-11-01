@@ -62,7 +62,7 @@ const AddFeedback: React.FC<AddFeedbackProps> = ({ productId, userId, onFeedback
             total={5} // Tổng số sao
             rating={rating} // Rating hiện tại
             onRate={({ rating }) => setRating(rating)} // Cập nhật rating khi chọn
-            style={{ fontSize: '30px' }}
+            //style={{ fontSize: '30px' }}
           />
         </div>
 
