@@ -21,6 +21,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null); 
   const navRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -37,6 +38,12 @@ const Header = ({ isErrorPage }: HeaderType) => {
     if (storedUserInfo) {
       const user = JSON.parse(storedUserInfo);
       setUserName(user.FirstName + " " + user.LastName);
+      const storedRole = localStorage.getItem("userRole");
+      const storedToken = localStorage.getItem("jwtToken");
+
+      if (storedToken && storedRole) {
+        setUserRole(storedRole);
+      }
     }
 
     if (!arrayPaths.includes(router.pathname) || isErrorPage) {
@@ -84,6 +91,9 @@ const Header = ({ isErrorPage }: HeaderType) => {
           <Link href="/history/index">Shopping History</Link>
           <a href="#">Contact</a>
           <a href="#">About Us</a>
+          {userRole === "RentalProvider" && (
+            <a href="/sup-management">Sup-Management</a>
+          )}
           <button className="site-nav__btn">
             <p>Account</p>
           </button>

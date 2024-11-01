@@ -10,6 +10,24 @@ type LoginMail = {
   password: string;
 }
 
+const decodeToken = (token: string) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
+};
+
+
 const LoginPage = () => {
   const router = useRouter();
   const { register, handleSubmit, errors } = useForm();
@@ -23,6 +41,14 @@ const LoginPage = () => {
   
       if (res && res.token) {
         localStorage.setItem('jwtToken', res.token);
+
+        const decodedToken = decodeToken(res.token);
+        if (decodedToken) {
+          const role = decodedToken.role;
+          if (role) {
+            localStorage.setItem('userRole', role);
+          }
+        }
   
         if (res.userInfo) {
           localStorage.setItem('userInfo', JSON.stringify(res.userInfo));
