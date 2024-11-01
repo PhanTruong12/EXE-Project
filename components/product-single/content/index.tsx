@@ -30,43 +30,50 @@ const Content = ({ product }: ProductContent) => {
   const validateInputs = () => {
     const errorMessages: string[] = [];
 
-    // Validate hire date is not in the past
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(hireDate);
 
-    if(selectedDate == undefined){
+    if (!hireDate) {
       errorMessages.push("Hire date is required!!!");
-      setErrors(errorMessages);
-      return errorMessages.length === 0;
-    }
-
-    if (selectedDate < today) {
+    } else if (selectedDate < today) {
       errorMessages.push("Hire date cannot be in the past!!!");
-      setErrors(errorMessages);
-      return errorMessages.length === 0;
     }
 
-    if (startTime == null || startTime == '') {
+    if (!startTime) {
       errorMessages.push("Start time is required!!!");
-      setErrors(errorMessages);
-      return errorMessages.length === 0;
     }
 
-    if (endTime == null || endTime == '') {
+    if (!endTime) {
       errorMessages.push("End time is required!!!");
-      setErrors(errorMessages);
-      return errorMessages.length === 0;
     }
 
-    // Validate start time is before end time
-    if (toInteger(startTime.split(":")[0])+4 - toInteger(endTime.split(":")[0]) > 0) {
-      errorMessages.push("End time must be at least 4 hours greater than start time!!!");
-      setErrors(errorMessages);
-      return errorMessages.length === 0;
+    if (startTime && endTime) {
+      const startHour = parseInt(startTime.split(":")[0], 10);
+      const endHour = parseInt(endTime.split(":")[0], 10);
+      const startMinutes = parseInt(startTime.split(":")[1], 10);
+      const endMinutes = parseInt(endTime.split(":")[1], 10);
+      const totalStartMinutes = startHour * 60 + startMinutes;
+      const totalEndMinutes = endHour * 60 + endMinutes;
+
+      if (totalEndMinutes - totalStartMinutes < 240) { // 4 hours = 240 minutes
+        errorMessages.push("End time must be at least 4 hours greater than start time!!!");
+      }
     }
 
+    setErrors(errorMessages);
     return errorMessages.length === 0;
-  }
+  };
+
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartTime = e.target.value;
+    setStartTime(newStartTime);
+
+    const [hour, minute] = newStartTime.split(":").map(Number);
+    const endHour = (hour + 4) % 24;
+    const formattedEndTime = `${endHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    setEndTime(formattedEndTime);
+  };
 
   const addToCart = () => {
     if (!validateInputs()) {
@@ -95,20 +102,19 @@ const Content = ({ product }: ProductContent) => {
   return (
     <section className="product-content">
       <div className="product-content__intro">
-        <h5 className="product__id">Product ID:<br></br>{product.productId}</h5>
+        <h5 className="product__id">Product ID:<br />{product.productId}</h5>
         <span className="product-on-sale">Sale</span>
         <h2 className="product__name">{product.productName}</h2>
 
         <div className="product__prices">
-          <h4>{ product.unitPrice }VND</h4>
+          <h4>{product.unitPrice} VND</h4>
           {product.discount &&
-            <span>{ product.unitPrice }VND</span>
+            <span>{product.unitPrice} VND</span>
           }
         </div>
       </div>
 
       <div className="product-content__filters">
-        {/* Hire Date */}
         <div className="product-filter-item">
           <h5>Select Hire Date:</h5>
           <input 
@@ -119,14 +125,13 @@ const Content = ({ product }: ProductContent) => {
           />
         </div>
 
-        {/* Hire Time */}
         <div className="product-filter-item">
           <h5>Select Hire Time:</h5>
           <div className="hire-time-inputs">
             <input 
               type="time" 
               value={startTime} 
-              onChange={(e) => setStartTime(e.target.value)} 
+              onChange={handleStartTimeChange} 
               className="hire-time-input" 
               placeholder="Start Time"
             />
@@ -141,7 +146,6 @@ const Content = ({ product }: ProductContent) => {
           </div>
         </div>
 
-        {/* Error Display */}
         {errors.length > 0 && (
           <div className="error-messages">
             {errors.map((error, index) => (
@@ -150,7 +154,6 @@ const Content = ({ product }: ProductContent) => {
           </div>
         )}
 
-        {/* Quantity */}
         <div className="product-filter-item">
           <h5>Quantity:</h5>
           <div className="quantity-buttons">
