@@ -80,45 +80,46 @@ const Header = ({ isErrorPage }: HeaderType) => {
             Products
           </Link>
           <Link href="/history/index">
-          Shopping History
+            Shopping History
           </Link>
           <a href="#">Contact</a>
           <a href="#">About Us</a>
           <button className="site-nav__btn">
             <p>Account</p>
           </button>
+          {userName && (
+            <button className="site-nav__btn" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </nav>
-
+  
         <div className="site-header__actions">
           <button
             ref={searchRef}
-            className={`search-form-wrapper ${
-              searchOpen ? "search-form--active" : ""
-            }`}
+            className={`search-form-wrapper ${searchOpen ? "search-form--active" : ""}`}
           >
             <form className={`search-form`}>
               <i className="icon-cancel" onClick={() => setSearchOpen(!searchOpen)}></i>
               <input type="text" name="search" placeholder="Enter the product you are looking for" />
-            </form>  
-            <i onClick={() => setSearchOpen(!searchOpen)}  className="icon-search"></i>
+            </form>
+            <i onClick={() => setSearchOpen(!searchOpen)} className="icon-search"></i>
           </button>
           <Link href="/cart" legacyBehavior>
             <button className="btn-cart">
               <i className="icon-cart"></i>
-              {cartItems.length > 0 && 
+              {cartItems.length > 0 && (
                 <span className="btn-cart__count">{cartItems.length}</span>
-              }
+              )}
             </button>
           </Link>
           <Link href="/login" legacyBehavior>
             <button className="site-header__btn-avatar">
-                <i className="icon-avatar"></i>
-                {userName && <span className="user-name">{userName}</span>} {}
-              </button>
+              <i className="icon-avatar"></i>
+              {userName && <span className="user-name">{userName}</span>}
+            </button>
           </Link>
-          <button 
-            onClick={() => setMenuOpen(true)} 
-            className="site-header__btn-menu">
+          <button onClick={() => setMenuOpen(true)} className="site-header__btn-menu">
             <i className="btn-hamburger"><span></span></i>
           </button>
         </div>
