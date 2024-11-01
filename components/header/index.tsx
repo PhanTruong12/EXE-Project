@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import useOnClickOutside from 'use-onclickoutside';
-import Logo from '../../assets/icons/logo';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { RootState } from 'store';
+import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import useOnClickOutside from "use-onclickoutside";
+import Logo from "../../assets/icons/logo";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { RootState } from "store";
 
 type HeaderType = {
   isErrorPage?: Boolean;
@@ -12,10 +12,12 @@ type HeaderType = {
 
 const Header = ({ isErrorPage }: HeaderType) => {
   const router = useRouter();
-  const { cartItems } = useSelector((state: RootState) => state.cart);
-  const arrayPaths = ['/'];
+  const { cartItems } = useSelector((state: RootState)  => state.cart);
+  const arrayPaths = ['/'];  
 
-  const [onTop, setOnTop] = useState(( !arrayPaths.includes(router.pathname) || isErrorPage ) ? false : true);
+  const [onTop, setOnTop] = useState(
+    !arrayPaths.includes(router.pathname) || isErrorPage ? false : true
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
@@ -31,11 +33,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    if(!arrayPaths.includes(router.pathname) || isErrorPage) {
-      return;
-    }
-
-    const storedUserInfo = localStorage.getItem('userInfo');
+    const storedUserInfo = localStorage.getItem("userInfo");
     if (storedUserInfo) {
       const user = JSON.parse(storedUserInfo);
       setUserName(user.FirstName + " " + user.LastName);
@@ -73,37 +71,46 @@ const Header = ({ isErrorPage }: HeaderType) => {
     <header className={`site-header ${!onTop ? 'site-header--fixed' : ''}`}>
       <div className="container">
         <Link href="/">
-          <h1 className="site-logo"><Logo />SUP-MATCH</h1>
+          <h1 className="site-logo">
+            <Logo />
+            SUP-MATCH
+          </h1>
         </Link>
-        <nav ref={navRef} className={`site-nav ${menuOpen ? 'site-nav--open' : ''}`}>
-          <Link href="/products">
-            Products
-          </Link>
-          <Link href="/history/index">
-            Shopping History
-          </Link>
+        <nav
+          ref={navRef}
+          className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
+        >
+          <Link href="/products">Products</Link>
+          <Link href="/history/index">Shopping History</Link>
           <a href="#">Contact</a>
           <a href="#">About Us</a>
           <button className="site-nav__btn">
             <p>Account</p>
           </button>
-          {userName && (
-            <button className="site-nav__btn" onClick={handleLogout}>
-              Logout
-            </button>
-          )}
         </nav>
-  
+
         <div className="site-header__actions">
           <button
             ref={searchRef}
-            className={`search-form-wrapper ${searchOpen ? "search-form--active" : ""}`}
+            className={`search-form-wrapper ${
+              searchOpen ? "search-form--active" : ""
+            }`}
           >
             <form className={`search-form`}>
-              <i className="icon-cancel" onClick={() => setSearchOpen(!searchOpen)}></i>
-              <input type="text" name="search" placeholder="Enter the product you are looking for" />
+              <i
+                className="icon-cancel"
+                onClick={() => setSearchOpen(!searchOpen)}
+              ></i>
+              <input
+                type="text"
+                name="search"
+                placeholder="Enter the product you are looking for"
+              />
             </form>
-            <i onClick={() => setSearchOpen(!searchOpen)} className="icon-search"></i>
+            <i
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="icon-search"
+            ></i>
           </button>
           <Link href="/cart" legacyBehavior>
             <button className="btn-cart">
@@ -113,14 +120,26 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          <Link href="/login" legacyBehavior>
-            <button className="site-header__btn-avatar">
-              <i className="icon-avatar"></i>
-              {userName && <span className="user-name">{userName}</span>}
-            </button>
-          </Link>
-          <button onClick={() => setMenuOpen(true)} className="site-header__btn-menu">
-            <i className="btn-hamburger"><span></span></i>
+          {userName ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button className="site-header__btn-avatar" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }} disabled>
+                <i className="icon-avatar"></i>
+                <span className="user-name">{userName}</span>
+              </button>
+              <span onClick={handleLogout} style={{ cursor: 'pointer', color: '#f00', fontSize: '18px' }} title="Logout">🔓</span>
+            </div>
+          ) : (
+            <Link href="/login" legacyBehavior>
+              <button className="site-header__btn-avatar">Login</button>
+            </Link>
+          )}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="site-header__btn-menu"
+          >
+            <i className="btn-hamburger">
+              <span></span>
+            </i>
           </button>
         </div>
       </div>
