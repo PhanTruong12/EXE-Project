@@ -12,8 +12,8 @@ type HeaderType = {
 
 const Header = ({ isErrorPage }: HeaderType) => {
   const router = useRouter();
-  const { cartItems } = useSelector((state: RootState)  => state.cart);
-  const arrayPaths = ['/'];  
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+  const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
     !arrayPaths.includes(router.pathname) || isErrorPage ? false : true
@@ -21,6 +21,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null); 
   const navRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -37,6 +38,12 @@ const Header = ({ isErrorPage }: HeaderType) => {
     if (storedUserInfo) {
       const user = JSON.parse(storedUserInfo);
       setUserName(user.FirstName + " " + user.LastName);
+      const storedRole = localStorage.getItem("userRole");
+      const storedToken = localStorage.getItem("jwtToken");
+
+      if (storedToken && storedRole) {
+        setUserRole(storedRole);
+      }
     }
 
     if (!arrayPaths.includes(router.pathname) || isErrorPage) {
@@ -68,7 +75,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   useOnClickOutside(searchRef, closeSearch);
 
   return (
-    <header className={`site-header ${!onTop ? 'site-header--fixed' : ''}`}>
+    <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
       <div className="container">
         <Link href="/">
           <h1 className="site-logo">
@@ -84,6 +91,9 @@ const Header = ({ isErrorPage }: HeaderType) => {
           <Link href="/history/index">Shopping History</Link>
           <a href="#">Contact</a>
           <a href="#">About Us</a>
+          {userRole === "RentalProvider" && (
+            <a href="/sup-management">Sup-Management</a>
+          )}
           <button className="site-nav__btn">
             <p>Account</p>
           </button>
@@ -121,12 +131,46 @@ const Header = ({ isErrorPage }: HeaderType) => {
             </button>
           </Link>
           {userName ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <button className="site-header__btn-avatar" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }} disabled>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <button
+                className="site-header__btn-avatar"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                disabled
+              >
                 <i className="icon-avatar"></i>
                 <span className="user-name">{userName}</span>
               </button>
-              <span onClick={handleLogout} style={{ cursor: 'pointer', color: '#f00', fontSize: '18px' }} title="Logout">🔓</span>
+              <span
+                onClick={handleLogout}
+                style={{
+                  cursor: "pointer",
+                  fontSize: "24px",
+                  color: "inherit",
+                }}
+                title="Logout"
+              >
+                {/* SVG icon logout */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  style={{ width: "24px", height: "24px" }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v13.5A2.25 2.25 0 004.5 21h9a2.25 2.25 0 002.25-2.25V15M9 12h12m0 0l-3-3m3 3l-3 3"
+                  />
+                </svg>
+              </span>
             </div>
           ) : (
             <Link href="/login" legacyBehavior>

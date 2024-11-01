@@ -1,8 +1,6 @@
-// pages/api/revenue.ts
+import { NextApiResponse } from 'next';
 
-import { NextApiRequest, NextApiResponse } from 'next';
-
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler = (_: unknown, res: NextApiResponse) => {
     const revenueData = [
         { month: 'January', revenue: 10000000 },
         { month: 'February', revenue: 12000000 },
@@ -15,4 +13,4 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json(revenueData);
 };
 
-export default handler;
+export default handler

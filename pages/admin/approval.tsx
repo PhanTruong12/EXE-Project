@@ -23,8 +23,8 @@ const ApproveAccountsPage = () => {
     },
   ]);
 
-  const approveAccount = (id: number) => {
-    setAccounts(accounts.map(account =>
+  const approveAccount = (id:number) => {
+    setAccounts(accounts.map(account => 
       account.id === id ? { ...account, status: 'Approved' } : account
     ));
   };
@@ -71,8 +71,6 @@ const ApproveAccountsPage = () => {
         </div>
       </div>
     </div>
-
-
   );
 };
 

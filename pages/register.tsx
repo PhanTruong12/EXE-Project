@@ -3,7 +3,7 @@ import { postData } from "../utils/services";
 import { useRouter } from "next/router";
 import Layout from "../layouts/Main";
 import Link from "next/link";
-import React from 'react';
+import React from "react";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -13,6 +13,10 @@ const RegisterPage = () => {
     email: "",
     password: "",
     accountType: "Customer",
+    phoneNumber: "",
+    address: "",
+    bank: "",
+    bankAccountNumber: "",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -35,13 +39,21 @@ const RegisterPage = () => {
         Email: formData.email,
         Password: formData.password,
         RoleName: formData.accountType,
+        PhoneNumber: formData.phoneNumber,
+        Address:
+          formData.accountType === "RentalProvider" ? formData.address : null,
+        Bank: formData.accountType === "RentalProvider" ? formData.bank : null,
+        BankAccountNumber:
+          formData.accountType === "RentalProvider"
+            ? formData.bankAccountNumber
+            : null,
       };
 
-      const result = await postData('/auth/SignUp', data);
+      const result = await postData("/auth/SignUp", data);
 
       if (result) {
         alert("Registration successful! Redirecting to login page.");
-        router.push("/login"); 
+        router.push("/login");
       }
     } catch (err) {
       setError("Failed to register. Please try again.");
@@ -113,6 +125,18 @@ const RegisterPage = () => {
               </div>
 
               <div className="form__input-row">
+                <input
+                  className="form__input"
+                  placeholder="Phone Number"
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form__input-row">
                 <p>Select your account type:</p>
                 <div className="radio-wrapper">
                   <label className="radio">
@@ -120,7 +144,7 @@ const RegisterPage = () => {
                       type="radio"
                       name="accountType"
                       value="Customer"
-                      checked={formData.accountType === 'Customer'}
+                      checked={formData.accountType === "Customer"}
                       onChange={handleChange}
                     />
                     <span className="radio__check"></span>
@@ -133,7 +157,7 @@ const RegisterPage = () => {
                       type="radio"
                       name="accountType"
                       value="RentalProvider"
-                      checked={formData.accountType === 'RentalProvider'}
+                      checked={formData.accountType === "RentalProvider"}
                       onChange={handleChange}
                     />
                     <span className="radio__check"></span>
@@ -142,7 +166,7 @@ const RegisterPage = () => {
                 </div>
               </div>
 
-              <div className="form__info">
+              {/* <div className="form__info">
                 <div className="checkbox-wrapper">
                   <label htmlFor="check-signed-in" className="checkbox checkbox--sm">
                     <input name="signed-in" type="checkbox" id="check-signed-in" required />
@@ -150,9 +174,52 @@ const RegisterPage = () => {
                     <p>I agree to the Terms of Service and Privacy Policy</p>
                   </label>
                 </div>
-              </div>
+              </div> */}
 
-              <button type="submit" className="btn btn--rounded btn--yellow btn-submit">
+              {formData.accountType === "RentalProvider" && (
+                <>
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      placeholder="Address"
+                      type="text"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      placeholder="Bank"
+                      type="text"
+                      name="bank"
+                      value={formData.bank}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      placeholder="Bank Account Number"
+                      type="text"
+                      name="bankAccountNumber"
+                      value={formData.bankAccountNumber}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              <button
+                type="submit"
+                className="btn btn--rounded btn--yellow btn-submit"
+              >
                 Sign up
               </button>
 
