@@ -8,13 +8,13 @@ const Sidebar = () => {
       <Link href="/analytics" legacyBehavior>
         <a className="sidebar-icon">
           <FaChartLine />
-          <span>Analytics</span>
+          
         </a>
       </Link>
       <Link href="/sup-management" legacyBehavior>
         <a className="sidebar-icon">
           <FaBoxOpen />
-          <span>Products</span>
+          
         </a>
       </Link>
     </div>

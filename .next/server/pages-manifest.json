@@ -1,1 +1,8 @@
-{"/_app":"pages/_app.js","/_document":"pages/_document.js","/404":"pages/404.html","/api/login":"pages/api/login.js","/api/product/[pid]":"pages/api/product/[pid].js","/_error":"pages/_error.js","/api/products":"pages/api/products.js","/api/sup/add":"pages/api/sup/add.js","/api/sup/delete":"pages/api/sup/delete.js","/api/sup/edit":"pages/api/sup/edit.js","/cart":"pages/cart.html","/cart/checkout":"pages/cart/checkout.html","/forgot-password":"pages/forgot-password.html","/":"pages/index.html","/login":"pages/login.html","/products":"pages/products.html","/register":"pages/register.html","/sup-management":"pages/sup-management.html","/product/[pid]":"pages/product/[pid].js"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/analytics": "pages/analytics.js",
+  "/sup-management": "pages/sup-management.js",
+  "/404": "pages/404.js"
+}

@@ -16,8 +16,6 @@ const Content = ({ product }: ProductContent) => {
 
   const [hireDate, setHireDate] = useState<string>('');
   const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-
   const [errors, setErrors] = useState<string[]>([]);
 
   const { favProducts } = useSelector((state: RootState) => state.user);
@@ -30,17 +28,24 @@ const Content = ({ product }: ProductContent) => {
   const validateInputs = () => {
     const errorMessages: string[] = [];
 
-    // Validate hire date is not in the past
-    const today = new Date();
-    const selectedDate = new Date(hireDate);
+    // Validate that hire date is selected
+    if (!hireDate) {
+      errorMessages.push("Please select a hire date.");
+    } else {
+      // Validate hire date is not in the past
+      const today = new Date();
+      const selectedDate = new Date(hireDate);
+      selectedDate.setHours(0, 0, 0, 0); // Set time to midnight to compare only dates
+      today.setHours(0, 0, 0, 0);
 
-    if (selectedDate < today) {
-      errorMessages.push("Hire date cannot be in the past.");
+      if (selectedDate < today) {
+        errorMessages.push("Hire date cannot be in the past.");
+      }
     }
 
-    // Validate start time is before end time
-    if (startTime >= endTime) {
-      errorMessages.push("Start time must be before end time.");
+    // Validate start time is set
+    if (!startTime) {
+      errorMessages.push("Please select a start time.");
     }
 
     setErrors(errorMessages);
@@ -60,7 +65,7 @@ const Content = ({ product }: ProductContent) => {
       count,
       hireDate,
       startTime,
-      endTime
+      endTime: calculateEndTime(startTime) // Automatically calculated end time
     };
 
     const productStore = {
@@ -71,6 +76,12 @@ const Content = ({ product }: ProductContent) => {
     dispatch(addProduct(productStore));
   };
 
+  const calculateEndTime = (start: string) => {
+    const [hour, minute] = start.split(':').map(Number);
+    const endHour = (hour + 4) % 24; // Add 4 hours, ensure it wraps around 24 hours
+    return `${endHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  }
+
   return (
     <section className="product-content">
       <div className="product-content__intro">
@@ -79,9 +90,9 @@ const Content = ({ product }: ProductContent) => {
         <h2 className="product__name">{product.productName}</h2>
 
         <div className="product__prices">
-          <h4>{ product.unitPrice }VND</h4>
+          <h4>{ product.unitPrice } VND</h4>
           {product.discount &&
-            <span>{ product.unitPrice }VND</span>
+            <span>{ product.unitPrice } VND</span>
           }
         </div>
       </div>
@@ -100,23 +111,19 @@ const Content = ({ product }: ProductContent) => {
 
         {/* Hire Time */}
         <div className="product-filter-item">
-          <h5>Select Hire Time:</h5>
+          <h5>Select Hire Start Time:</h5>
           <div className="hire-time-inputs">
             <input 
               type="time" 
               value={startTime} 
               onChange={(e) => setStartTime(e.target.value)} 
               className="hire-time-input" 
-              placeholder="Start Time"
             />
-            <span>to</span>
-            <input 
-              type="time" 
-              value={endTime} 
-              onChange={(e) => setEndTime(e.target.value)} 
-              className="hire-time-input" 
-              placeholder="End Time"
-            />
+            {startTime && (
+              <span className="hire-end-time">
+                End Time: {calculateEndTime(startTime)}
+              </span>
+            )}
           </div>
         </div>
 

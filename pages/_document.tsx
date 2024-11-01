@@ -24,8 +24,9 @@ export default class CustomDocument extends Document<DocumentProps> {
 
     return (
       <html lang="en">
+        
         <Head>
-
+          
           {/* We only want to add the scripts if in production */}
           {isProduction && (
             <Fragment>
@@ -47,10 +48,12 @@ export default class CustomDocument extends Document<DocumentProps> {
                   `,
                 }}
               />
+              
             </Fragment>
           )}
         </Head>
         <body>
+          
           <Main />
           <NextScript />
         </body>

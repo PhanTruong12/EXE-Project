@@ -4,6 +4,7 @@ import Sidebar from '../components/sup-management/Sidebar';
 import ActionMenu from '../components/sup-management/ActionMenu';
 import AddSupModal from '../components/sup-management/AddSupModal'; // Import the AddSupModal component
 
+
 const SupManagement = () => {
   // Fake data for SUPs
   const supList = [
@@ -11,7 +12,8 @@ const SupManagement = () => {
       id: 1,
       name: 'SUP 1',
       status: 'Active',
-      price: '$999.00',
+      price: '300.00',
+      description: 'SUP DEP',
       totalSales: 150,
       createdAt: '6/23/2024',
       hireDate: '6/24/2024',
@@ -21,7 +23,8 @@ const SupManagement = () => {
       id: 2,
       name: 'SUP 2',
       status: 'Available',
-      price: '$500.00',
+      price: '300.00',
+      description: 'SUP DEP',
       totalSales: 50,
       createdAt: '6/10/2024',
       hireDate: null,
@@ -31,7 +34,7 @@ const SupManagement = () => {
 
   const [showAddModal, setShowAddModal] = useState(false); // Control Add SUP modal visibility
 
-  const handleAddSup = (supData: { name: string; price: string; description: string; image: File | null }) => {
+  const handleAddSup = (supData: { name: string; price: number; description: string; image: File | null }) => {
     console.log('New SUP Data:', supData);
     // Logic to save the SUP data can be added here
     setShowAddModal(false); // Close modal after saving
@@ -80,7 +83,8 @@ const SupManagement = () => {
               <tr>
                 <th>Name</th>
                 <th>Status</th>
-                <th>Price</th>
+                <th>Price (VND)</th>
+                <th>Description</th>
                 <th>Total Sales</th>
                 <th>Created At</th>
                 <th>Hire Date</th>
@@ -93,10 +97,10 @@ const SupManagement = () => {
                 <tr key={sup.id}>
                   <td>
                     <img src="/path-to-image.jpg" alt="SUP" className="product-image" />
-                    {sup.name}
                   </td>
                   <td><span className={`status ${sup.status.toLowerCase()}`}>{sup.status}</span></td>
                   <td>{sup.price}</td>
+                  <td>{sup.description}</td>
                   <td>{sup.totalSales}</td>
                   <td>{sup.createdAt}</td>
                   <td>{sup.hireDate || 'Available'}</td>

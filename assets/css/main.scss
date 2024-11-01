@@ -1533,7 +1533,7 @@ h5 {
   }
 
   .products-filter {
-    
+
     .btn-submit {
       display: block;
       margin-left: auto;
@@ -1619,7 +1619,7 @@ h5 {
     }
 
     .products-filter__block {
-      padding:20px 21px;
+      padding: 20px 21px;
       margin-bottom: 13px;
       border: 1px solid #E6E6E6;
 
@@ -2012,12 +2012,15 @@ h5 {
 
   .product-single__description {
     max-width: 938px;
-    margin: 0 auto;
-    flex-wrap: wrap;
+    margin: 0 auto; // Centers the description section within its container
+    display: flex;
+    flex-direction: column; // Stack items vertically
+    align-items: center; // Center-aligns items inside the flex container
+    text-align: center; // Ensures text aligns to the center as well
 
     @include breakpoint(phone) {
-      display: flex;
-      justify-content: space-between;
+      flex-direction: row;
+      justify-content: center; // Aligns items centrally on mobile view
     }
 
     .product-description-block {
@@ -2057,7 +2060,7 @@ h5 {
         color: #000;
         font-size: 13px;
         line-height: 145%;
-        text-align: left;
+        text-align: center; // Center-aligns text inside paragraphs
 
         @include breakpoint(phone) {
           font-size: 14px;
@@ -2065,6 +2068,7 @@ h5 {
       }
     }
   }
+
 
   .product-single__content {
     margin-bottom: 50px;
@@ -3488,7 +3492,7 @@ h5 {
         }
       }
 
-      
+
     }
   }
 }
@@ -3506,10 +3510,12 @@ h5 {
     color: #6c757d;
     margin-bottom: 5px;
   }
+
   h1 {
     font-size: 1.5rem;
     margin: 0;
   }
+
   p {
     color: #6c757d;
     margin-bottom: 20px;
@@ -3532,6 +3538,7 @@ h5 {
       background-color: #f1f3f5;
       border-radius: 20px;
       cursor: pointer;
+
       &.active {
         background-color: #007bff;
         color: #fff;
@@ -3603,10 +3610,12 @@ h5 {
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.9rem;
+
     &.active {
       background-color: #d4edda;
       color: #155724;
     }
+
     &.draft {
       background-color: #f8d7da;
       color: #721c24;
@@ -3620,9 +3629,10 @@ h5 {
     font-size: 1.2rem;
   }
 }
+
 .action-menu {
   position: relative;
-  
+
   .dropdown {
     position: absolute;
     top: 100%;
@@ -3634,7 +3644,7 @@ h5 {
     width: 120px;
     padding: 10px;
     z-index: 10;
-    
+
     p {
       font-size: 0.9rem;
       color: #6c757d;
@@ -3648,6 +3658,7 @@ h5 {
       li {
         padding: 8px;
         cursor: pointer;
+
         &:hover {
           background-color: #f8f9fa;
         }
@@ -3655,20 +3666,22 @@ h5 {
     }
   }
 }
+
 // main.scss hoặc sidebar.scss
 
 .sidebar {
-  width: 60px;              // Đặt chiều rộng cho sidebar
-  height: 100vh;            // Chiều cao toàn màn hình
+  width: 60px; // Đặt chiều rộng cho sidebar
+  height: 100vh; // Chiều cao toàn màn hình
   background-color: #f8f9fa;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
-  position: fixed;          // Sidebar cố định bên trái
+  position: fixed; // Sidebar cố định bên trái
   top: 0;
   left: 0;
 }
+
 // Sidebar
 .sidebar {
   width: 80px;
@@ -3684,7 +3697,7 @@ h5 {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-icon {
+.admin-sidebar-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3706,22 +3719,28 @@ h5 {
   }
 }
 
-// Nội dung chính
-.main-content {
-  margin-left: 100px;
-  padding: 40px;
+.admin-sidebar-nav-item.active {
+  background-color: #1a2a33;
+  font-weight: bold;
 }
 
+// Nội dung chính
+.main-content {
+  padding: 20px;
+  width: 100%;
+}
 .header {
   .breadcrumbs {
     font-size: 0.9rem;
     color: #6c757d;
     margin-bottom: 5px;
   }
+
   h1 {
     font-size: 1.8rem;
     margin: 0;
   }
+
   p {
     color: #6c757d;
     margin-bottom: 20px;
@@ -3745,9 +3764,9 @@ h5 {
 
 // Nội dung chính
 .main-content {
-  margin-left: 70px;  // Điều chỉnh để giảm khoảng cách giữa Sidebar và nội dung chính
-  padding: 20px 30px; // Giảm padding để nội dung không bị thu hẹp
-  width: calc(100% - 70px);  // Đảm bảo phần nội dung chiếm toàn bộ chiều rộng còn lại
+  margin-left: 70px;
+  padding: 20px 30px;
+  width: calc(100% - 70px);
 }
 
 
@@ -3756,14 +3775,14 @@ h5 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;  // Giảm khoảng cách giữa toolbar và bảng
+  margin-bottom: 15px; // Giảm khoảng cách giữa toolbar và bảng
 
   .filters {
     display: flex;
-    gap: 8px;  // Giảm khoảng cách giữa các nút filter
+    gap: 8px; // Giảm khoảng cách giữa các nút filter
 
     .filter {
-      padding: 6px 10px;  // Giảm padding trong các nút filter
+      padding: 6px 10px; // Giảm padding trong các nút filter
       border-radius: 15px;
       font-size: 0.85rem;
     }
@@ -3791,7 +3810,7 @@ h5 {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;  // Giảm padding trong bảng
+  padding: 15px; // Giảm padding trong bảng
   max-width: 100%;
 }
 
@@ -3801,10 +3820,10 @@ h5 {
 
   th,
   td {
-    padding: 8px;  // Giảm padding để thu gọn khoảng cách trong bảng
+    padding: 8px; // Giảm padding để thu gọn khoảng cách trong bảng
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
-    
+
   }
 
   th {
@@ -3846,10 +3865,12 @@ h5 {
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.85rem;
+
   &.active {
     background-color: #d4edda;
     color: #155724;
   }
+
   &.available {
     background-color: #f1f1f1;
     color: #999;
@@ -3859,8 +3880,8 @@ h5 {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -3870,73 +3891,75 @@ h5 {
 
 .modal-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px; // Tăng padding cho nội dung thoáng hơn
   border-radius: 8px;
-  width: 600px; // Increase width of the modal
-  max-width: 90%;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-
-  h2 {
-    margin-top: 0;
-  }
+  width: 500px; // Tăng chiều rộng của modal
+  max-width: 90vw; // Giới hạn chiều rộng tối đa để tương thích trên các thiết bị nhỏ
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 
   label {
-    display: block;
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
     font-weight: bold;
+    margin-bottom: 15px;
 
-    input,
-    textarea {
-      width: 100%;
-      padding: 8px;
+    input[type="text"],
+    input[type="file"],
+    textarea,
+    select {
       margin-top: 5px;
+      padding: 10px; // Tăng padding cho các trường nhập liệu
+      font-size: 15px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 120px; // Increase initial height for the description field
+    select {
+      appearance: none;
+      background-color: #fff;
+      cursor: pointer;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    .save-button,
+    .close-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .save-button {
+      background-color: #007bff;
+      color: #fff;
+      margin-right: 10px;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    .close-button {
+      background-color: #ccc;
+      color: #333;
+
+      &:hover {
+        background-color: #999;
+      }
     }
   }
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  gap: 10px;
-
-  .save-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-  }
-
-  .close-button {
-    padding: 8px 16px;
-    background-color: #ccc;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #999;
-    }
-  }
-}
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -4027,4 +4050,371 @@ h5 {
   height: 36px;
   border-radius: 50%;
   border: 2px solid #dee2e6;
+}
+
+.admin-sidebar {
+  width: 200px;
+  background-color: #2a3b47; // Màu nền tối hơn cho sidebar
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-search-container {
+  flex-grow: 1;
+  /* Cho phép ô tìm kiếm chiếm không gian tối đa ở bên trái */
+}
+
+.admin-sidebar-logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.admin-sidebar-nav {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.admin-sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-sidebar-nav-item:hover {
+  background-color: #1a2a33; // Màu nền khi hover
+}
+
+.sidebar-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  max-width: 100%; /* Chiếm toàn bộ chiều rộng */
+  box-sizing: border-box;
+}
+
+.admin-search-bar {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  /* Chiếm toàn bộ không gian có thể */
+  max-width: 300px;
+  /* Đặt giới hạn tối đa */
+  font-size: 0.9rem;
+}
+
+.admin-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  /* Để avatar hình tròn */
+  border: 2px solid #dee2e6;
+}
+
+.admin-recent-sales,
+.admin-budget-report {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  height: 300px; // Giới hạn chiều cao để đồng nhất với các thành phần khác
+}
+
+.admin-chart-container {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  /* Cho phép phần tử chiếm hết chiều ngang */
+  margin: 0 auto;
+  height: 500px;
+  /* Chiều cao giữ nguyên */
+}
+
+.admin-recent-sales h3,
+.admin-budget-report h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f6fa;
+  color: #333;
+}
+
+.admin-container {
+  display: flex;
+}
+
+.admin-main-content {
+  max-width: 100%; /* Đảm bảo chiều rộng của nội dung chính */
+  margin: 0 auto;
+  padding: 2rem; /* Tạo khoảng cách đều */
+  box-sizing: border-box;
+}
+
+.approve-accounts {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.approve-accounts h1 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.account-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.account-table th,
+.account-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.account-table th {
+  background-color: #f7f7f7;
+  color: #333;
+  font-weight: bold;
+}
+
+.account-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status.pending {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.status.approved {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.approve-button {
+  padding: 5px 12px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.approve-button:hover {
+  background-color: #0056b3;
+}
+.admin-dashboard-content {
+  display: flex;
+  gap: 1.5rem; /* Khoảng cách giữa các biểu đồ */
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  box-sizing: border-box;
+}
+
+.chart-wrapper {
+  flex: 1;
+  padding: 1rem;
+  min-width: 0;
+}
+.revenue-report {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.revenue-report h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.revenue-report table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.revenue-report th,
+.revenue-report td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.revenue-report th {
+  background-color: #f2f2f2;
+}
+
+.revenue-report tr:hover {
+  background-color: #f1f1f1;
+}
+.header-container .page-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+.header-container .page-subtitle {
+  font-size: 16px;
+  color: #777;
+}
+/* main.scss */
+
+/* Main content */
+.mains-content {
+  padding: 20px;
+  margin-left: 100px;
+  margin-top: 20px;
+  width: calc(100% - 100px);
+}
+
+/* Thẻ thống kê */
+.stat-cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  justify-content: space-around;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 220px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease; /* Tạo hiệu ứng hover */
+}
+
+.stat-card:hover {
+  transform: translateY(-5px); /* Hiệu ứng hover nâng thẻ lên */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.change-indicator {
+  background-color: #d0e6fd;
+  color: #4c8bf5;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+/* Nội dung chính của Dashboard */
+.dashboard-content {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: space-between;
+}
+
+.chart-container {
+  flex: 1.5; /* Thu nhỏ lại để có thêm không gian cho Recent Orders */
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Thẻ Recent Orders */
+.recent-orders {
+  flex: 1;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  max-height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.orders-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.order-item div {
+  flex: 1; /* Đảm bảo mỗi cột có chiều rộng đều nhau */
+  text-align: center;
+}
+
+.order-amount {
+  font-weight: bold;
+  color: #333;
+}
+
+.order-time {
+  color: #888;
+  font-size: 14px;
 }
