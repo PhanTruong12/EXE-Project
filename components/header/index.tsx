@@ -1,239 +1,194 @@
-import { useState } from "react";
-import { postData } from "../utils/services";
-import { useRouter } from "next/router";
-import Layout from "../layouts/Main";
+import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import useOnClickOutside from "use-onclickoutside";
+import Logo from "../../assets/icons/logo";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import { RootState } from "store";
 
-const RegisterPage = () => {
+type HeaderType = {
+  isErrorPage?: Boolean;
+};
+
+const Header = ({ isErrorPage }: HeaderType) => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    accountType: "Customer",
-    phoneNumber: "",
-    address: "",
-    bank: "",
-    bankAccountNumber: "",
-  });
-  const [error, setError] = useState<string | null>(null);
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+  const arrayPaths = ["/"];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const [onTop, setOnTop] = useState(
+    !arrayPaths.includes(router.pathname) || isErrorPage ? false : true
+  );
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null); 
+  const navRef = useRef(null);
+  const searchRef = useRef(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    try {
-      const data = {
-        FirstName: formData.firstName,
-        LastName: formData.lastName,
-        Email: formData.email,
-        Password: formData.password,
-        RoleName: formData.accountType,
-        PhoneNumber: formData.phoneNumber,
-        Address:
-          formData.accountType === "RentalProvider" ? formData.address : null,
-        Bank: formData.accountType === "RentalProvider" ? formData.bank : null,
-        BankAccountNumber:
-          formData.accountType === "RentalProvider"
-            ? formData.bankAccountNumber
-            : null,
-      };
-
-      const result = await postData("/auth/SignUp", data);
-
-      if (result) {
-        alert("Registration successful! Redirecting to login page.");
-        router.push("/login");
-      }
-    } catch (err) {
-      setError("Failed to register. Please try again.");
+  const headerClass = () => {
+    if (window.pageYOffset === 0) {
+      setOnTop(true);
+    } else {
+      setOnTop(false);
     }
   };
 
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+    if (storedUserInfo) {
+      const user = JSON.parse(storedUserInfo);
+      setUserName(user.FirstName + " " + user.LastName);
+      const storedRole = localStorage.getItem("userRole");
+      const storedToken = localStorage.getItem("jwtToken");
+
+      if (storedToken && storedRole) {
+        setUserRole(storedRole);
+      }
+    }
+
+    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+      return;
+    }
+
+    headerClass();
+    window.onscroll = function () {
+      headerClass();
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    setUserName(null);
+    router.push("/login");
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+  };
+
+  // on click outside
+  useOnClickOutside(navRef, closeMenu);
+  useOnClickOutside(searchRef, closeSearch);
+
   return (
-    <Layout>
-      <section className="form-page">
-        <div className="container">
-          <div className="back-button-section">
-            <Link href="/products">
-              <i className="icon-left"></i>Back to store
-            </Link>
-          </div>
+    <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
+      <div className="container">
+        <Link href="/">
+          <h1 className="site-logo">
+            <Logo />
+            SUP-MATCH
+          </h1>
+        </Link>
+        <nav
+          ref={navRef}
+          className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
+        >
+          <Link href="/products">Products</Link>
+          <Link href="/history/index">Shopping History</Link>
+          <a href="#">Contact</a>
+          <a href="#">About Us</a>
+          {userRole === "RentalProvider" && (
+            <a href="/sup-management">Sup-Management</a>
+          )}
+          <button className="site-nav__btn">
+            <p>Account</p>
+          </button>
+        </nav>
 
-          <div className="form-block">
-            <h2 className="form-block__title">
-              Create an account and discover the benefits
-            </h2>
-
-            <form className="form" onSubmit={handleSubmit}>
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  placeholder="First Name"
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  placeholder="Last Name"
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  placeholder="Email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  placeholder="Phone Number"
-                  type="text"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form__input-row">
-                <p>Select your account type:</p>
-                <div className="radio-wrapper">
-                  <label className="radio">
-                    <input
-                      type="radio"
-                      name="accountType"
-                      value="Customer"
-                      checked={formData.accountType === "Customer"}
-                      onChange={handleChange}
-                    />
-                    <span className="radio__check"></span>
-                    Customer
-                  </label>
-                </div>
-                <div className="radio-wrapper">
-                  <label className="radio">
-                    <input
-                      type="radio"
-                      name="accountType"
-                      value="RentalProvider"
-                      checked={formData.accountType === "RentalProvider"}
-                      onChange={handleChange}
-                    />
-                    <span className="radio__check"></span>
-                    Rental Provider
-                  </label>
-                </div>
-              </div>
-
-              {/* <div className="form__info">
-                <div className="checkbox-wrapper">
-                  <label htmlFor="check-signed-in" className="checkbox checkbox--sm">
-                    <input name="signed-in" type="checkbox" id="check-signed-in" required />
-                    <span className="checkbox__check"></span>
-                    <p>I agree to the Terms of Service and Privacy Policy</p>
-                  </label>
-                </div>
-              </div> */}
-
-              {formData.accountType === "RentalProvider" && (
-                <>
-                  <div className="form__input-row">
-                    <input
-                      className="form__input"
-                      placeholder="Address"
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form__input-row">
-                    <input
-                      className="form__input"
-                      placeholder="Bank"
-                      type="text"
-                      name="bank"
-                      value={formData.bank}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form__input-row">
-                    <input
-                      className="form__input"
-                      placeholder="Bank Account Number"
-                      type="text"
-                      name="bankAccountNumber"
-                      value={formData.bankAccountNumber}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </>
-              )}
-
-              <button
-                type="submit"
-                className="btn btn--rounded btn--yellow btn-submit"
-              >
-                Sign up
-              </button>
-
-              {error && <p className="form__error">{error}</p>}
-
-              <p className="form__signup-link">
-                <Link href="/login">Are you already a member?</Link>
-              </p>
+        <div className="site-header__actions">
+          <button
+            ref={searchRef}
+            className={`search-form-wrapper ${
+              searchOpen ? "search-form--active" : ""
+            }`}
+          >
+            <form className={`search-form`}>
+              <i
+                className="icon-cancel"
+                onClick={() => setSearchOpen(!searchOpen)}
+              ></i>
+              <input
+                type="text"
+                name="search"
+                placeholder="Enter the product you are looking for"
+              />
             </form>
-          </div>
+            <i
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="icon-search"
+            ></i>
+          </button>
+          <Link href="/cart" legacyBehavior>
+            <button className="btn-cart">
+              <i className="icon-cart"></i>
+              {cartItems.length > 0 && (
+                <span className="btn-cart__count">{cartItems.length}</span>
+              )}
+            </button>
+          </Link>
+          {userName ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <button
+                className="site-header__btn-avatar"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                disabled
+              >
+                <i className="icon-avatar"></i>
+                <span className="user-name">{userName}</span>
+              </button>
+              <span
+                onClick={handleLogout}
+                style={{
+                  cursor: "pointer",
+                  fontSize: "24px",
+                  color: "inherit",
+                }}
+                title="Logout"
+              >
+                {/* SVG icon logout */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  style={{ width: "24px", height: "24px" }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v13.5A2.25 2.25 0 004.5 21h9a2.25 2.25 0 002.25-2.25V15M9 12h12m0 0l-3-3m3 3l-3 3"
+                  />
+                </svg>
+              </span>
+            </div>
+          ) : (
+            <Link href="/login" legacyBehavior>
+              <button className="site-header__btn-avatar">Login</button>
+            </Link>
+          )}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="site-header__btn-menu"
+          >
+            <i className="btn-hamburger">
+              <span></span>
+            </i>
+          </button>
         </div>
-      </section>
-    </Layout>
+      </div>
+    </header>
   );
 };
 
-export default RegisterPage;
+export default Header;
