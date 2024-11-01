@@ -1,8 +1,11 @@
+import { ProductType } from '../../../types';
+
 type ProductDescriptionType = {
   show: boolean;
+  product: ProductType;
 }
 
-const Description = ({ show }: ProductDescriptionType) => {
+const Description = ({ show, product }: ProductDescriptionType) => {
   const style = {
     display: show ? 'flex' : 'none',
   }
@@ -12,7 +15,12 @@ const Description = ({ show }: ProductDescriptionType) => {
       <div className="product-description-block">
         <i className="icon-cart"></i>
         <h4>Details and product description</h4>
-        <p> <br></br></p>
+        <p>-------------------------------------------------. <br></br>-------------------------------------------------------------.</p>
+      </div>
+      <div className="product-description-block">
+        <i className="icon-cart"></i>
+        <h4>Details and product description</h4>
+        <p>--------------------------------------------------. <br></br>----------------------------------------------------------------.</p>
       </div>
     </section>
   );

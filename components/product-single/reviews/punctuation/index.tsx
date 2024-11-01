@@ -1,7 +1,8 @@
+import React from 'react';
 import Rater from 'react-rater';
-import { PunctuationType } from 'types';
+import { Feedback } from '../../../../types';
 
-const Punctuation = ({ votes, punctuation, countOpinions }: PunctuationType) => { 
+const Punctuation = ({ votes, punctuation, countOpinions }: Feedback) => { 
   const percentageBar = (count: number) => {
     return (count*100)/countOpinions;
   } 

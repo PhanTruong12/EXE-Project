@@ -48,7 +48,8 @@ const ShoppingCart = ({ thumb, productName, productId, hireDate, startTime, endT
       <td>
         <div className="cart-product">
           <div className="cart-product__img">
-            <img src={thumb} alt="" />
+            {/* <img src={thumb} alt="" /> */}
+            <img src={`data:image/png;base64,${thumb}`} alt="Product" />
           </div>
           <div className="cart-product__content">
             <h3>{productName}</h3>

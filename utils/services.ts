@@ -3,7 +3,6 @@ const BASE_URL = "https://supmatch.azurewebsites.net/api";
 // function to post data
 export async function postData(endpoint = '', data = {}) {
   try {
-    console.log('Sending Data:', JSON.stringify(data));
 
     const url = `${BASE_URL}${endpoint}`;
     const response = await fetch(url, {

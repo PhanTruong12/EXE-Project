@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import useOnClickOutside from 'use-onclickoutside';
+import Logo from '../../assets/icons/logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
@@ -14,7 +15,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const arrayPaths = ['/'];
 
-  const [onTop, setOnTop] = useState(!arrayPaths.includes(router.pathname) || isErrorPage ? false : true);
+  const [onTop, setOnTop] = useState(( !arrayPaths.includes(router.pathname) || isErrorPage ) ? false : true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
@@ -30,14 +31,18 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+    if(!arrayPaths.includes(router.pathname) || isErrorPage) {
       return;
     }
 
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
       const user = JSON.parse(storedUserInfo);
-      setUserName(user.FirstName);
+      setUserName(user.FirstName + " " + user.LastName);
+    }
+
+    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+      return;
     }
 
     headerClass();
@@ -45,6 +50,12 @@ const Header = ({ isErrorPage }: HeaderType) => {
       headerClass();
     };
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    setUserName(null);
+    router.push("/login");
+  };
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -62,39 +73,52 @@ const Header = ({ isErrorPage }: HeaderType) => {
     <header className={`site-header ${!onTop ? 'site-header--fixed' : ''}`}>
       <div className="container">
         <Link href="/">
-          <h1 className="site-logo">
-            <img src="./images/1.png" alt="SUP-MATCH Logo" width="50" height="50" />SUP-MATCH
-          </h1>
+          <h1 className="site-logo"><Logo />SUP-MATCH</h1>
         </Link>
         <nav ref={navRef} className={`site-nav ${menuOpen ? 'site-nav--open' : ''}`}>
-          <Link href="/products">Products</Link>
-          <Link href="/history/index">Shopping History</Link>
+          <Link href="/products">
+            Products
+          </Link>
+          <Link href="/history/index">
+          Shopping History
+          </Link>
           <a href="#">Contact</a>
           <a href="#">About Us</a>
-          <button className="site-nav__btn"><p>Account</p></button>
+          <button className="site-nav__btn">
+            <p>Account</p>
+          </button>
         </nav>
 
         <div className="site-header__actions">
-          <button ref={searchRef} className={`search-form-wrapper ${searchOpen ? 'search-form--active' : ''}`}>
+          <button
+            ref={searchRef}
+            className={`search-form-wrapper ${
+              searchOpen ? "search-form--active" : ""
+            }`}
+          >
             <form className={`search-form`}>
               <i className="icon-cancel" onClick={() => setSearchOpen(!searchOpen)}></i>
               <input type="text" name="search" placeholder="Enter the product you are looking for" />
-            </form>
-            <i onClick={() => setSearchOpen(!searchOpen)} className="icon-search"></i>
+            </form>  
+            <i onClick={() => setSearchOpen(!searchOpen)}  className="icon-search"></i>
           </button>
           <Link href="/cart" legacyBehavior>
             <button className="btn-cart">
               <i className="icon-cart"></i>
-              {cartItems.length > 0 && <span className="btn-cart__count">{cartItems.length}</span>}
+              {cartItems.length > 0 && 
+                <span className="btn-cart__count">{cartItems.length}</span>
+              }
             </button>
           </Link>
           <Link href="/login" legacyBehavior>
             <button className="site-header__btn-avatar">
-              <i className="icon-avatar"></i>
-              {userName && <span className="user-name">{userName}</span>} {}
-            </button>
+                <i className="icon-avatar"></i>
+                {userName && <span className="user-name">{userName}</span>} {}
+              </button>
           </Link>
-          <button onClick={() => setMenuOpen(true)} className="site-header__btn-menu">
+          <button 
+            onClick={() => setMenuOpen(true)} 
+            className="site-header__btn-menu">
             <i className="btn-hamburger"><span></span></i>
           </button>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { some } from 'lodash';
+import { some, toInteger } from 'lodash';
 import { addProduct } from 'store/reducers/cart';
 import { toggleFavProduct } from 'store/reducers/user';
 import { ProductType, ProductStoreType } from 'types';
@@ -16,6 +16,8 @@ const Content = ({ product }: ProductContent) => {
 
   const [hireDate, setHireDate] = useState<string>('');
   const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
+
   const [errors, setErrors] = useState<string[]>([]);
 
   const { favProducts } = useSelector((state: RootState) => state.user);
@@ -28,27 +30,41 @@ const Content = ({ product }: ProductContent) => {
   const validateInputs = () => {
     const errorMessages: string[] = [];
 
-    // Validate that hire date is selected
-    if (!hireDate) {
-      errorMessages.push("Please select a hire date.");
-    } else {
-      // Validate hire date is not in the past
-      const today = new Date();
-      const selectedDate = new Date(hireDate);
-      selectedDate.setHours(0, 0, 0, 0); // Set time to midnight to compare only dates
-      today.setHours(0, 0, 0, 0);
+    // Validate hire date is not in the past
+    const today = new Date();
+    const selectedDate = new Date(hireDate);
 
-      if (selectedDate < today) {
-        errorMessages.push("Hire date cannot be in the past.");
-      }
+    if(selectedDate == undefined){
+      errorMessages.push("Hire date is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
     }
 
-    // Validate start time is set
-    if (!startTime) {
-      errorMessages.push("Please select a start time.");
+    if (selectedDate < today) {
+      errorMessages.push("Hire date cannot be in the past!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
     }
 
-    setErrors(errorMessages);
+    if (startTime == null || startTime == '') {
+      errorMessages.push("Start time is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
+    if (endTime == null || endTime == '') {
+      errorMessages.push("End time is required!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
+    // Validate start time is before end time
+    if (toInteger(startTime.split(":")[0])+4 - toInteger(endTime.split(":")[0]) > 0) {
+      errorMessages.push("End time must be at least 4 hours greater than start time!!!");
+      setErrors(errorMessages);
+      return errorMessages.length === 0;
+    }
+
     return errorMessages.length === 0;
   }
 
@@ -65,7 +81,7 @@ const Content = ({ product }: ProductContent) => {
       count,
       hireDate,
       startTime,
-      endTime: calculateEndTime(startTime) // Automatically calculated end time
+      endTime
     };
 
     const productStore = {
@@ -76,12 +92,6 @@ const Content = ({ product }: ProductContent) => {
     dispatch(addProduct(productStore));
   };
 
-  const calculateEndTime = (start: string) => {
-    const [hour, minute] = start.split(':').map(Number);
-    const endHour = (hour + 4) % 24; // Add 4 hours, ensure it wraps around 24 hours
-    return `${endHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-  }
-
   return (
     <section className="product-content">
       <div className="product-content__intro">
@@ -90,9 +100,9 @@ const Content = ({ product }: ProductContent) => {
         <h2 className="product__name">{product.productName}</h2>
 
         <div className="product__prices">
-          <h4>{ product.unitPrice } VND</h4>
+          <h4>{ product.unitPrice }VND</h4>
           {product.discount &&
-            <span>{ product.unitPrice } VND</span>
+            <span>{ product.unitPrice }VND</span>
           }
         </div>
       </div>
@@ -111,19 +121,23 @@ const Content = ({ product }: ProductContent) => {
 
         {/* Hire Time */}
         <div className="product-filter-item">
-          <h5>Select Hire Start Time:</h5>
+          <h5>Select Hire Time:</h5>
           <div className="hire-time-inputs">
             <input 
               type="time" 
               value={startTime} 
               onChange={(e) => setStartTime(e.target.value)} 
               className="hire-time-input" 
+              placeholder="Start Time"
             />
-            {startTime && (
-              <span className="hire-end-time">
-                End Time: {calculateEndTime(startTime)}
-              </span>
-            )}
+            <span>to</span>
+            <input 
+              type="time" 
+              value={endTime} 
+              onChange={(e) => setEndTime(e.target.value)} 
+              className="hire-time-input" 
+              placeholder="End Time"
+            />
           </div>
         </div>
 

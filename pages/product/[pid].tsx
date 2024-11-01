@@ -8,7 +8,7 @@ import ProductsFeatured from '../../components/products-featured';
 import Gallery from '../../components/product-single/gallery';
 import Content from '../../components/product-single/content';
 import Description from '../../components/product-single/description';
-// import Reviews from '../../components/product-single/reviews';
+import Reviews from '../../components/product-single/reviews';
 // import { server } from '../../utils/server'; 
 
 // types
@@ -50,8 +50,8 @@ const Product = ({ product }: ProductPageType) => {
               <button type="button" onClick={() => setShowBlock('reviews')} className={`btn btn--rounded ${showBlock === 'reviews' ? 'btn--active' : ''}`}>Reviews (2)</button>
             </div>
 
-            <Description show={showBlock === 'description'} />
-            {/* <Reviews product={product} show={showBlock === 'reviews'} /> */}
+            <Description product={product} show={showBlock === 'description'} />
+            <Reviews product={product} show={showBlock === 'reviews'} />
           </div>
         </div>
       </section>
