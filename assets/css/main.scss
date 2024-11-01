@@ -3709,18 +3709,13 @@ h5 {
   left: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
-<<<<<<< HEAD
 .admin-sidebar {
   max-width: 150px;
 }
-=======
-
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
 .admin-sidebar-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-<<<<<<< HEAD
   
   color: #c48a99;
   font-size: 1.5rem;
@@ -3730,15 +3725,6 @@ h5 {
   transition: color 0.3s;
 
 
-=======
-  justify-content: center;
-  color: #6c757d;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-decoration: none;
-  transition: color 0.3s;
-
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
   &:hover {
     color: #007bff;
   }
@@ -4114,17 +4100,11 @@ h5 {
   padding: 0;
   width: 100%;
 }
-<<<<<<< HEAD
 .link-item{
   display:flex;
 }
 .admin-sidebar-nav-item {
   display: block-flex;
-=======
-
-.admin-sidebar-nav-item {
-  display: flex;
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
   align-items: center;
   padding: 0.8rem 1rem;
   color: #ffffff;
@@ -4151,16 +4131,8 @@ h5 {
 .admin-header {
   display: flex;
   justify-content: space-between;
-<<<<<<< HEAD
   margin-right:-20px;
   max-width:1000%;
-=======
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  max-width: 100%; /* Chiếm toàn bộ chiều rộng */
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
   box-sizing: border-box;
 }
 
@@ -4169,18 +4141,12 @@ h5 {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
-<<<<<<< HEAD
   border: 2px solid;
   border-radius: 25px;
   background-color:#fff;
   
   max-width: 300px;
   
-=======
-  /* Chiếm toàn bộ không gian có thể */
-  max-width: 300px;
-  /* Đặt giới hạn tối đa */
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
   font-size: 0.9rem;
 }
 
@@ -4314,11 +4280,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   padding: 1rem;
-<<<<<<< HEAD
   width: 110%; /* Chiếm toàn bộ chiều rộng */
-=======
-  width: 100%; /* Chiếm toàn bộ chiều rộng */
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
   box-sizing: border-box;
 }
 
@@ -4527,7 +4489,6 @@ body {
 
 .add-feedback__submit:hover {
   background-color: #e6b800; /* Đổi màu khi hover */
-<<<<<<< HEAD
 }
 .approve-product-container {
   padding: 50px;
@@ -4593,6 +4554,3 @@ body {
 .reject-button {
   background-color: #f44336;
 }
-=======
-}
->>>>>>> a10357348193760c37e9deafe58b7bde4e389ff7
