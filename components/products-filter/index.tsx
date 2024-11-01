@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import Checkbox from './form-builder/checkbox';
-import CheckboxColor from './form-builder/checkbox-color';
 import Slider from 'rc-slider';
-
-// data
 import productsTypes from './../../utils/data/products-types';
-import productsColors from './../../utils/data/products-colors';
 import productsSizes from './../../utils/data/products-sizes';
 
 const { createSliderWithTooltip } = Slider;
@@ -28,7 +24,7 @@ const ProductsFilter = () => {
       
       <div className={`products-filter__wrapper ${filtersOpen ? 'products-filter__wrapper--open' : ''}`}>
         <div className="products-filter__block">
-          <button type="button">Product type</button>
+          <button type="button">Company</button>
           <div className="products-filter__block__content">
             {productsTypes.map(type => (
               <Checkbox 
@@ -48,7 +44,7 @@ const ProductsFilter = () => {
         </div>
         
         <div className="products-filter__block">
-          <button type="button">Size</button>
+          <button type="button">Type</button>
           <div className="products-filter__block__content checkbox-square-wrapper">
             {productsSizes.map(type => (
               <Checkbox 
@@ -60,16 +56,6 @@ const ProductsFilter = () => {
           </div>
         </div>
         
-        <div className="products-filter__block">
-          <button type="button">Color</button>
-          <div className="products-filter__block__content">
-            <div className="checkbox-color-wrapper">
-              {productsColors.map(type => (
-                <CheckboxColor key={type.id} valueName={type.color} name="product-color" color={type.color} />
-              ))}
-            </div>
-          </div>
-        </div>
 
         <button type="submit" className="btn btn-submit btn--rounded btn--yellow">Apply</button>
       </div>

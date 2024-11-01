@@ -9,19 +9,19 @@ import Gallery from '../../components/product-single/gallery';
 import Content from '../../components/product-single/content';
 import Description from '../../components/product-single/description';
 import Reviews from '../../components/product-single/reviews';
-import { server } from '../../utils/server'; 
+// import { server } from '../../utils/server'; 
 
 // types
 import { ProductType } from 'types';
+import { getData } from 'utils/services';
 
 type ProductPageType = {
   product: ProductType;
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const pid = query.pid;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+  const pid = query.pid; // Lấy pid từ query
+  const product = await getData(`/Products/GetProductById/${pid}`); // Gọi API để lấy sản phẩm
 
   return {
     props: {
@@ -40,7 +40,7 @@ const Product = ({ product }: ProductPageType) => {
       <section className="product-single">
         <div className="container">
           <div className="product-single__content">
-            <Gallery images={product.images} />
+            <Gallery productImages={product.productImages} />
             <Content product={product} />
           </div>
 
@@ -50,7 +50,7 @@ const Product = ({ product }: ProductPageType) => {
               <button type="button" onClick={() => setShowBlock('reviews')} className={`btn btn--rounded ${showBlock === 'reviews' ? 'btn--active' : ''}`}>Reviews (2)</button>
             </div>
 
-            <Description show={showBlock === 'description'} />
+            <Description product={product} show={showBlock === 'description'} />
             <Reviews product={product} show={showBlock === 'reviews'} />
           </div>
         </div>

@@ -1,8 +1,11 @@
+import { ProductType } from '../../../types';
+
 type ProductDescriptionType = {
   show: boolean;
+  product: ProductType;
 }
 
-const Description = ({ show }: ProductDescriptionType) => {
+const Description = ({ show, product }: ProductDescriptionType) => {
   const style = {
     display: show ? 'flex' : 'none',
   }

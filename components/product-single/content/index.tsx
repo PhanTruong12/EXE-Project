@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import productsColors from './../../../utils/data/products-colors';
-import productsSizes from './../../../utils/data/products-sizes';
-import CheckboxColor from './../../products-filter/form-builder/checkbox-color';
 import { useDispatch, useSelector } from 'react-redux';
-import { some } from 'lodash';
+import { some, toInteger } from 'lodash';
 import { addProduct } from 'store/reducers/cart';
 import { toggleFavProduct } from 'store/reducers/user';
 import { ProductType, ProductStoreType } from 'types';
@@ -16,86 +13,147 @@ type ProductContent = {
 const Content = ({ product }: ProductContent) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState<number>(1);
-  const [color, setColor] = useState<string>('');
-  const [itemSize, setItemSize] = useState<string>('');
 
-  const onColorSet = (e: string) => setColor(e);
-  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => setItemSize(e.target.value);
+  const [hireDate, setHireDate] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
+
+  const [errors, setErrors] = useState<string[]>([]);
 
   const { favProducts } = useSelector((state: RootState) => state.user);
-  const isFavourite = some(favProducts, productId => productId === product.id);
+  const isFavourite = some(favProducts, productId => productId === product.productId);
 
   const toggleFav = () => {
-    dispatch(toggleFavProduct(
-      { 
-        id: product.id,
-      }
-    ))
+    dispatch(toggleFavProduct({ id: product.productId }));
   }
 
-  const addToCart = () => {
-    const productToSave: ProductStoreType = { 
-      id: product.id,
-      name: product.name,
-      thumb: product.images ? product.images[0] : '',
-      price: product.currentPrice,
-      count: count,
-      color: color,
-      size: itemSize
+  const validateInputs = () => {
+    const errorMessages: string[] = [];
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(hireDate);
+
+    if (!hireDate) {
+      errorMessages.push("Hire date is required!!!");
+    } else if (selectedDate < today) {
+      errorMessages.push("Hire date cannot be in the past!!!");
     }
+
+    if (!startTime) {
+      errorMessages.push("Start time is required!!!");
+    }
+
+    if (!endTime) {
+      errorMessages.push("End time is required!!!");
+    }
+
+    if (startTime && endTime) {
+      const startHour = parseInt(startTime.split(":")[0], 10);
+      const endHour = parseInt(endTime.split(":")[0], 10);
+      const startMinutes = parseInt(startTime.split(":")[1], 10);
+      const endMinutes = parseInt(endTime.split(":")[1], 10);
+      const totalStartMinutes = startHour * 60 + startMinutes;
+      const totalEndMinutes = endHour * 60 + endMinutes;
+
+      if (totalEndMinutes - totalStartMinutes < 240) { // 4 hours = 240 minutes
+        errorMessages.push("End time must be at least 4 hours greater than start time!!!");
+      }
+    }
+
+    setErrors(errorMessages);
+    return errorMessages.length === 0;
+  };
+
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartTime = e.target.value;
+    setStartTime(newStartTime);
+
+    const [hour, minute] = newStartTime.split(":").map(Number);
+    const endHour = (hour + 4) % 24;
+    const formattedEndTime = `${endHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    setEndTime(formattedEndTime);
+  };
+
+  const addToCart = () => {
+    if (!validateInputs()) {
+      return;
+    }
+
+    const productToSave: ProductStoreType = { 
+      productId: product.productId,
+      productName: product.productName,
+      thumb: product.productImages ? product.productImages[0].imageData : './images/products/',
+      unitPrice: product.currentPrice ?? product.unitPrice,
+      count,
+      hireDate,
+      startTime,
+      endTime
+    };
 
     const productStore = {
       count,
       product: productToSave
-    }
+    };
 
     dispatch(addProduct(productStore));
-  }
+  };
 
   return (
     <section className="product-content">
       <div className="product-content__intro">
-        <h5 className="product__id">Product ID:<br></br>{product.id}</h5>
+        <h5 className="product__id">Product ID:<br />{product.productId}</h5>
         <span className="product-on-sale">Sale</span>
-        <h2 className="product__name">{product.name}</h2>
+        <h2 className="product__name">{product.productName}</h2>
 
         <div className="product__prices">
-          <h4>{ product.currentPrice }VND</h4>
+          <h4>{product.unitPrice} VND</h4>
           {product.discount &&
-            <span>{ product.price }VND</span>
+            <span>{product.unitPrice} VND</span>
           }
         </div>
       </div>
 
       <div className="product-content__filters">
         <div className="product-filter-item">
-          <h5>Color:</h5>
-          <div className="checkbox-color-wrapper">
-            {productsColors.map(type => (
-              <CheckboxColor 
-                key={type.id} 
-                type={'radio'} 
-                name="product-color" 
-                color={type.color}
-                valueName={type.label}
-                onChange={onColorSet} 
-              />
+          <h5>Select Hire Date:</h5>
+          <input 
+            type="date" 
+            value={hireDate} 
+            onChange={(e) => setHireDate(e.target.value)} 
+            className="hire-date-input" 
+          />
+        </div>
+
+        <div className="product-filter-item">
+          <h5>Select Hire Time:</h5>
+          <div className="hire-time-inputs">
+            <input 
+              type="time" 
+              value={startTime} 
+              onChange={handleStartTimeChange} 
+              className="hire-time-input" 
+              placeholder="Start Time"
+            />
+            <span>to</span>
+            <input 
+              type="time" 
+              value={endTime} 
+              onChange={(e) => setEndTime(e.target.value)} 
+              className="hire-time-input" 
+              placeholder="End Time"
+            />
+          </div>
+        </div>
+
+        {errors.length > 0 && (
+          <div className="error-messages">
+            {errors.map((error, index) => (
+              <p key={index} style={{ color: 'red' }}>{error}</p>
             ))}
           </div>
-        </div>
-        <div className="product-filter-item">
-          <h5>Size: <strong>See size table</strong></h5>
-          <div className="checkbox-color-wrapper">
-            <div className="select-wrapper">
-              <select onChange={onSelectChange}>
-                <option>Choose size</option>
-                {productsSizes.map(type => (
-                  <option value={type.label}>{type.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
+        )}
+
         <div className="product-filter-item">
           <h5>Quantity:</h5>
           <div className="quantity-buttons">
@@ -110,13 +168,14 @@ const Content = ({ product }: ProductContent) => {
             </div>
             
             <button type="submit" onClick={() => addToCart()} className="btn btn--rounded btn--yellow">Add to cart</button>
-            <button type="button" onClick={toggleFav} className={`btn-heart ${isFavourite ? 'btn-heart--active' : ''}`}><i className="icon-heart"></i></button>
+            <button type="button" onClick={toggleFav} className={`btn-heart ${isFavourite ? 'btn-heart--active' : ''}`}>
+              <i className="icon-heart"></i>
+            </button>
           </div>
         </div>
       </div>
     </section>
   );
 };
-  
+
 export default Content;
-    

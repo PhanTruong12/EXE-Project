@@ -1,3 +1,5 @@
+import React from "react";
+
 type CheckboxColorType = {
 	type?: string;
 	name: string;
