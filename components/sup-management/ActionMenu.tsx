@@ -1,18 +1,10 @@
 // components/ActionMenu.tsx
 import React, { useState } from 'react';
 import EditProductModal from './EditProductModal';
-
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  status: string;
-  hireDate: string | null;
-  hireTime: string | null;
-}
+import { ProductType } from 'types';
 
 interface ActionMenuProps {
-  product: Product;
+  product: ProductType;
 }
 
 const ActionMenu: React.FC<ActionMenuProps> = ({ product }) => {

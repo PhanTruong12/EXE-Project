@@ -17,7 +17,7 @@ const Reviews = ({ show, product, onFeedbackAdded }: ReviewsProductType) => {
   }
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [userId, setUserInfo] = useState<string | null>(null);
-  const loadFeedbacks = async (productId: number) => {
+  const loadFeedbacks = async (productId = '') => {
     const updatedProduct = await getData(`/Products/GetProductById/${productId}`);
     setFeedbacks(updatedProduct.feedbacks)
   };
