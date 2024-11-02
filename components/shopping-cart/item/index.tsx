@@ -66,7 +66,10 @@ const ShoppingCart = ({ thumb, productName, productId, hireDate, startTime, endT
           <button type="button" onClick={() => setProductCount(count + 1)}>+</button>
         </div>
       </td>
-      <td>${unitPrice}</td>
+      <td>{ new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              }).format(unitPrice) }</td>
       <td><i className="icon-cancel" onClick={() => removeFromCart()}></i></td>
     </tr>
   );

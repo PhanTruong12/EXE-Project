@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface AddSupModalProps {
   onClose: () => void;
-  onSave: (supData: { name: string; price: number; description: string; image: File | null; status: string }) => void;
+  onSave: (supData: { name: string; price: number; description: string; image: File | null; unitsInstock: string; accountId: string }) => void;
 }
 
 const AddSupModal: React.FC<AddSupModalProps> = ({ onClose, onSave }) => {
@@ -10,8 +10,13 @@ const AddSupModal: React.FC<AddSupModalProps> = ({ onClose, onSave }) => {
   const [price, setPrice] = useState<number | ''>('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [status, setStatus] = useState('active'); // Thêm state cho status
-
+  const [unitsInstock, setUnitsInstock] = useState('');
+  const [accountId, setAccountId] = useState('');
+  
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") ?? 'null');
+    setAccountId(userInfo?.Id || '');
+  }, []);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -29,7 +34,7 @@ const AddSupModal: React.FC<AddSupModalProps> = ({ onClose, onSave }) => {
 
   const handleSave = () => {
     if (typeof price === 'number') {
-      onSave({ name, price, description, image, status });
+      onSave({ name, price, description, image, unitsInstock, accountId });
       onClose();
     } else {
       alert("Please Input Number Price");
@@ -58,12 +63,14 @@ const AddSupModal: React.FC<AddSupModalProps> = ({ onClose, onSave }) => {
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
         <label>
-          Status:
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="active">Active</option>
-            <option value="available">Available</option>
-            <option value="sold_out">Sold Out</option>
-          </select>
+          Price:
+          <input 
+            type="text" 
+            value={unitsInstock === '' ? '' : unitsInstock.toString()} 
+            onChange={(e) => setUnitsInstock(e.target.value)}
+            inputMode="numeric" 
+            pattern="[0-9]*"
+          />
         </label>
         <label>
           Image:

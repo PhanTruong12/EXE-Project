@@ -125,7 +125,10 @@ const CheckoutPage = () => {
                 
                 <div className="checkout-total">
                   <p>Total cost</p>
-                  <h3>${priceTotal}</h3>
+                  <h3>{ new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND',
+                      }).format(priceTotal) }</h3>
                 </div>
               </div>
             </div>

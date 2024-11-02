@@ -10,16 +10,16 @@ type ReviewsListType = {
 const ReviewsList = ({ feedbacks }: ReviewsListType) => {
 
   return (
-    <section className="reviews-list">
+    <section className="reviews-list scrollable">
       {feedbacks.map((feedback, index) => (
         <div key={index} className="review-item">
           <div className="review__avatar">
-            {/* <img src={ review.avatar } alt="avatar" /> */}
+            <img src="/images/user-avatar.jpg" alt="avatar" />
           </div>
           
           <div className="review__content">
-            <span style={{ fontSize: '12px' }}>{new Date(feedback.ratingDate).toLocaleTimeString("vi-VN")} - 
-              {new Date(feedback.ratingDate).toLocaleDateString("vi-VN", {
+            <span style={{ fontSize: '12px' }}>
+              {new Date(feedback.ratingDate).toLocaleTimeString("vi-VN")} - {new Date(feedback.ratingDate).toLocaleDateString("en-US", {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',

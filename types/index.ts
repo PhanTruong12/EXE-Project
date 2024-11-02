@@ -22,12 +22,18 @@ export type ProductType = {
   description: string;
   thumb: string;
   unitPrice: number;
+  unitsInstock: number;
+  releasedDate: Date;
+  ratingAverage: number;
+  accountId: string;
   count: number;
   productImages: ProductImageType[];
   discount?: string;
   currentPrice: number;
   punctuation: PunctuationType;
   feedbacks: Feedback[];
+  user: ApplicationUser;
+  status:string;
 }
 
 export type ProductTypeList = {
@@ -79,10 +85,14 @@ export type ApplicationUser = {
   id: string;
   firstName: string;
   lastName: string;
+  email:string;
   status: number;
+  bankAccountNumber: string;
+  bank: string;
   orderTables?: OrderTable[];
   shoppingCarts?: string;
   feedbacks?: Feedback[];
+  products?: ProductType[];
 }
 
 export type OrderTable = {

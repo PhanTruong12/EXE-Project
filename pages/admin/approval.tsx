@@ -1,34 +1,35 @@
 import Sidebar from '../../components/admin-management/Sidebar';
 import Header from '../../components/admin-management/Header';
 import { useState } from 'react';
+import { getData, postData } from 'utils/services';
+import useSwr from 'swr';
+import { ApplicationUser } from 'types';
 
 
 const ApproveAccountsPage = () => {
-  const [accounts, setAccounts] = useState([
-    {
-      id: 1,
-      name: 'User A',
-      status: 'Pending',
-      email: 'usera@example.com',
-      bankNumber: '123456789',
-      bankName: 'Bank A',
-    },
-    {
-      id: 2,
-      name: 'User B',
-      status: 'Pending',
-      email: 'userb@example.com',
-      bankNumber: '987654321',
-      bankName: 'Bank B',
-    },
-  ]);
+  const fetcher = () => getData('/auth/GetAllRentalProviders');
+  const { data, error } = useSwr<ApplicationUser[]>('/auth/GetAllRentalProviders', fetcher);
+  const [applicationUsers, setApplicationUsers] = useState<ApplicationUser[]>([]);
+  
+  if (error) return <div>Error loading data</div>;
+  if (!data) return <div>Loading...</div>;
 
-  const approveAccount = (id:number) => {
-    setAccounts(accounts.map(account => 
-      account.id === id ? { ...account, status: 'Approved' } : account
-    ));
+  if (data && applicationUsers.length === 0) {
+    setApplicationUsers(data);
+  }
+
+  const approveAccount = async (id: string) => {
+    // Cập nhật trạng thái cục bộ
+    setApplicationUsers((prevUsers) =>
+      prevUsers.map((account) =>
+        account.id === id ? { ...account, status: 1 } : account
+      )
+    );
+
+    // Gửi yêu cầu cập nhật lên server
+    await postData('/auth/ActiveRentalProviderById', id);
   };
-
+  
   return (
     <div className="admin-container">
       <Sidebar />
@@ -48,17 +49,17 @@ const ApproveAccountsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {accounts.map(account => (
+              {applicationUsers.map(account => (
                 <tr key={account.id}>
-                  <td>{account.name}</td>
+                  <td>{account.firstName} {account.lastName}</td>
                   <td>{account.email}</td>
-                  <td>{account.bankNumber}</td>
-                  <td>{account.bankName}</td>
-                  <td className={`status ${account.status.toLowerCase()}`}>
-                    {account.status}
+                  <td>{account.bankAccountNumber}</td>
+                  <td>{account.bank}</td>
+                  <td className={`status ${account.status === 0 ? 'pending' : 'active'}`}>
+                    {account.status === 0 ? 'Pending' : 'Active'}
                   </td>
                   <td>
-                    {account.status === 'Pending' && (
+                    {account.status === 0 && (
                       <button onClick={() => approveAccount(account.id)} className="approve-button">
                         Duyệt
                       </button>

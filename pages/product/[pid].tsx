@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from '../../components/footer';
 import Layout from '../../layouts/Main';
 import Breadcrumb from '../../components/breadcrumb';
@@ -32,7 +32,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 const Product = ({ product }: ProductPageType) => {
   const [showBlock, setShowBlock] = useState('description');
-
+  const [feedbacksCount, setFeedbacksCount] = useState<number | null>(null);
+  const handleFeedbackAdded = () => {
+    setFeedbacksCount((feedbacksCount ? feedbacksCount:0)+1);
+  };
+  useEffect(() => {
+    setFeedbacksCount(product.feedbacks.length);
+  }, []);
   return (
     <Layout>
       <Breadcrumb />
@@ -47,11 +53,11 @@ const Product = ({ product }: ProductPageType) => {
           <div className="product-single__info">
             <div className="product-single__info-btns">
               <button type="button" onClick={() => setShowBlock('description')} className={`btn btn--rounded ${showBlock === 'description' ? 'btn--active' : ''}`}>Description</button>
-              <button type="button" onClick={() => setShowBlock('reviews')} className={`btn btn--rounded ${showBlock === 'reviews' ? 'btn--active' : ''}`}>Reviews (2)</button>
+              <button type="button" onClick={() => setShowBlock('reviews')} className={`btn btn--rounded ${showBlock === 'reviews' ? 'btn--active' : ''}`}>Reviews ({feedbacksCount})</button>
             </div>
 
             <Description product={product} show={showBlock === 'description'} />
-            <Reviews product={product} show={showBlock === 'reviews'} />
+            <Reviews product={product} show={showBlock === 'reviews'} onFeedbackAdded={handleFeedbackAdded}/>
           </div>
         </div>
       </section>

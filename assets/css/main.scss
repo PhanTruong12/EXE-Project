@@ -2125,11 +2125,17 @@ h5 {
     .reviews-list {
       width: 100%;
       margin-left: auto;
-
+      
       @include breakpoint(tablet-lg) {
         width: 48%;
       }
     }
+  }
+
+  .reviews-list.scrollable {
+    max-height: 400px; /* Đặt chiều cao tối đa của danh sách */
+    overflow-y: auto; /* Thêm thanh cuộn khi nội dung vượt quá chiều cao */
+    padding-right: 8px; /* Thêm khoảng cách bên phải để thanh cuộn không che nội dung */
   }
 
   .product-single__info {
@@ -4250,7 +4256,7 @@ body {
   color: #333;
 }
 
-.status.approved {
+.status.active {
   background-color: #4caf50;
   color: #ffffff;
 }
@@ -4483,4 +4489,9 @@ body {
 
 .add-feedback__submit:hover {
   background-color: #e6b800; /* Đổi màu khi hover */
+}
+
+.add-feedback.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

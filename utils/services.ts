@@ -49,3 +49,32 @@ export async function getData(endpoint = '') {
 
   return response.json();
 }
+
+export const putDataFormData = async (endpoint = '', data: Record<string, any> = {}) => {
+  try {
+
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    const url = `${BASE_URL}${endpoint}`;
+    const response = await fetch(url, {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: formData,
+    });
+
+    const rawText = await response.text();
+
+    const [jwt, extraData] = rawText.split('~');
+    const extraPayload = extraData ? JSON.parse(extraData) : null;
+
+    return { token: jwt, userInfo: extraPayload };
+  } catch (error) {
+    console.error('Error in postDataFormData:', error);
+    throw error;
+  }
+};

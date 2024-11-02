@@ -1,43 +1,40 @@
-// pages/sup-management.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/sup-management/Sidebar';
 import ActionMenu from '../components/sup-management/ActionMenu';
-import AddSupModal from '../components/sup-management/AddSupModal'; // Import the AddSupModal component
+import AddSupModal from '../components/sup-management/AddSupModal';
+import { postData, putDataFormData } from 'utils/services';
+import useSwr from 'swr';
+import { ProductType } from 'types';
 
+const fetcher = async (userId: string) => {
+  const response = await postData('/Products/GetProductsByAccountId', userId);
+  return Array.isArray(response) ? response : []; // Đảm bảo luôn trả về mảng
+};
 
 const SupManagement = () => {
-  // Fake data for SUPs
-  const supList = [
-    {
-      id: 1,
-      name: 'SUP 1',
-      status: 'Active',
-      price: '300.00',
-      description: 'SUP DEP',
-      totalSales: 150,
-      createdAt: '6/23/2024',
-      hireDate: '6/24/2024',
-      hireTime: '08:00 - 12:00',
-    },
-    {
-      id: 2,
-      name: 'SUP 2',
-      status: 'Available',
-      price: '300.00',
-      description: 'SUP DEP',
-      totalSales: 50,
-      createdAt: '6/10/2024',
-      hireDate: null,
-      hireTime: null,
-    },
-  ];
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [userId, setUserId] = useState('');
+  
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") ?? 'null');
+    setUserId(userInfo?.Id || '');
+  }, []);
+  
+  const { data: products = [], error } = useSwr<ProductType[]>(userId ? userId : null, fetcher);
 
-  const [showAddModal, setShowAddModal] = useState(false); // Control Add SUP modal visibility
+  if (error) return <div>Error loading data</div>;
+  if (!products) return <div>Loading...</div>;
 
-  const handleAddSup = (supData: { name: string; price: number; description: string; image: File | null }) => {
-    console.log('New SUP Data:', supData);
-    // Logic to save the SUP data can be added here
-    setShowAddModal(false); // Close modal after saving
+  const handleAddSup = async (supData: { name: string; price: number; description: string; unitsInstock: string; accountId: string; image: File | null }) => {
+    await putDataFormData(`/Products/AddProduct`, {
+      productName: supData.name,
+      description: supData.description,
+      unitPrice: supData.price,
+      unitsInstock: supData.unitsInstock,
+      accountId: supData.accountId,
+      imageFile: supData.image
+    });
+    setShowAddModal(false);
   };
 
   return (
@@ -93,27 +90,26 @@ const SupManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {supList.map((sup) => (
-                <tr key={sup.id}>
+              {products.map((product) => (
+                <tr key={product.productId}>
                   <td>
-                    <img src="/path-to-image.jpg" alt="SUP" className="product-image" />
+                    <img src={product.thumb || '/path-to-default-image.jpg'} alt="SUP" className="product-image" />
                   </td>
-                  <td><span className={`status ${sup.status.toLowerCase()}`}>{sup.status}</span></td>
-                  <td>{sup.price}</td>
-                  <td>{sup.description}</td>
-                  <td>{sup.totalSales}</td>
-                  <td>{sup.createdAt}</td>
-                  <td>{sup.hireDate || 'Available'}</td>
-                  <td>{sup.hireTime || 'N/A'}</td>
+                  <td><span className={`status ${product.count > 0 ? 'active' : 'inactive'}`}>{product.count > 0 ? 'Active' : 'Inactive'}</span></td>
+                  <td>{product.unitPrice}</td>
+                  <td>{product.description}</td>
+                  <td>{product.count}</td>
+                  <td>{new Date().toLocaleDateString()}</td>
+                  <td>{product.count > 0 ? 'Available' : 'Not Available'}</td>
+                  <td>N/A</td>
                   <td>
-                    <ActionMenu product={sup} />
+                    <ActionMenu product={product} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
         {showAddModal && (
           <AddSupModal 
             onClose={() => setShowAddModal(false)} 

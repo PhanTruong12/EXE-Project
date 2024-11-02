@@ -27,8 +27,15 @@ const AddFeedback: React.FC<AddFeedbackProps> = ({ productId, userId, onFeedback
       productId,
     };
 
+    if(!userId){
+        setError('Please login to send feedback.');
+        setLoading(false);
+        return;
+    }
+
     if (!description || rating <= 0) {
       setError('Please enter a description and a valid rating.');
+      setLoading(false);
       return;
     }
 
@@ -46,18 +53,17 @@ const AddFeedback: React.FC<AddFeedbackProps> = ({ productId, userId, onFeedback
 
   return (
     <div className="add-feedback">
-      <h2 className="add-feedback__title">Add Feedback</h2>
+      <h1 className="add-feedback__title">Add Feedback</h1>
       {error && <p className="add-feedback__error">{error}</p>}
       <form className="add-feedback__form" onSubmit={handleSubmit}>
-        <textarea
+        <textarea style={{ fontSize: '15px' }}
           className="add-feedback__description"
           placeholder="Enter your feedback here..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         
-        <div className="add-feedback__rating">
-          <h3>Select a rating:</h3>
+        <div className="add-feedback__rating" style={{ fontSize: '50px' }}>
           <Rater
             total={5} // Tổng số sao
             rating={rating} // Rating hiện tại

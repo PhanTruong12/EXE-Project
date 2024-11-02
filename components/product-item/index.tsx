@@ -10,7 +10,7 @@ const ProductItem = ({ discount, productImages, productId, productName, currentP
   const { favProducts } = useSelector((state: RootState) => state.user);
 
   const isFavourite = some(favProducts, productId => productId === productId);
-  console.log(productImages);
+  
   const toggleFav = () => {
     dispatch(toggleFavProduct(
       { 
@@ -38,9 +38,15 @@ const ProductItem = ({ discount, productImages, productId, productName, currentP
       <div className="product__description">
         <h3>{productName}</h3>
         <div className={"product__price " + (discount ? 'product__price--discount' : '')}>
-          <h4>{currentPrice}VND</h4>
+          <h4>{ new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              }).format(currentPrice ?? 0) }</h4>
           {discount &&  
-            <span>{currentPrice}VND</span> 
+            <span>{ new Intl.NumberFormat('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            }).format(currentPrice ?? 0) }</span> 
           }
         </div>
       </div>

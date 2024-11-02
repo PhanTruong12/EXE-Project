@@ -63,7 +63,10 @@ const ShoppingCart = () => {
 
           <div className="cart-actions__items-wrapper">
             <p className="cart-actions__total">
-              Total cost <strong>${priceTotal().toFixed(2)}</strong>
+              Total cost <strong>{ new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              }).format(priceTotal()) }</strong>
             </p>
             <a href="/cart/checkout" className="btn btn--rounded btn--yellow">
               Checkout
