@@ -45,10 +45,10 @@ const CheckoutPage = () => {
 
           <div className="checkout-content">
             <div className="checkout__col-6">
-              <div className="checkout__btns">
+              {/* <div className="checkout__btns">
                 <button className="btn btn--rounded btn--yellow">Log in</button>
                 <button className="btn btn--rounded btn--border">Sign up</button>
-              </div>
+              </div> */}
 
               <div className="block">
                 <h3 className="block__title">Information</h3>
