@@ -56,7 +56,7 @@ const SupManagement = () => {
               <input type="text" className="search-input" placeholder="Search..." />
               <span className="search-icon">🔍</span>
             </div>
-            <img src="/path/to/avatar.png" alt="User Avatar" className="user-avatar" />
+            <i className="icon-avatar"></i>
           </div>
         </div>
 
